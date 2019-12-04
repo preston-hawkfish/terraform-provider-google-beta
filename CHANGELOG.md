@@ -1,5 +1,20 @@
 ## 3.0.1 (Unreleased)
 ## 3.0.0 (December 04, 2019)
+
+NOTES:
+
+These are the changes between 3.0.0-beta.1 and the 3.0.0 final release. For changes since 2.20.0, see also the 3.0.0-beta.1 changelog entry below.
+
+**Please see [the 3.0.0 upgrade guide](https://www.terraform.io/docs/providers/google/guides/version_3_upgrade.html) for upgrade guidance.**
+
+BREAKING CHANGES:
+* cloudrun: updated `cloud_run_service` to v1. Significant updates have been made to the resource including a breaking schema change. ([#1426](https://github.com/terraform-providers/terraform-provider-google-beta/pull/1426))
+
+BUG FIXES:
+* compute: fixed a bug in `google_compute_instance_group_manager` and `google_compute_region_instance_group_manager` that created an artificial diff when removing a now-removed field from a config ([#1401](https://github.com/terraform-providers/terraform-provider-google-beta/pull/1401))
+* dns: Fixed bug causing `google_dns_managed_zone` datasource to always return a 404 ([#1405](https://github.com/terraform-providers/terraform-provider-google-beta/pull/1405))
+* service_networking: fixed "An unknown error occurred" bug when creating multiple google_service_networking_connection resources in parallel ([#1246](https://github.com/terraform-providers/terraform-provider-google-beta/pull/1246))
+
 ## 3.0.0-beta.1 (November 15, 2019)
 
 BREAKING CHANGES:
