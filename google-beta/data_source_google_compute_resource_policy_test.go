@@ -50,7 +50,6 @@ func testAccDataSourceComputeResourcePolicyCheck(dataSourceName string, resource
 		rsAttr := rs.Primary.Attributes
 
 		policyAttrsToTest := []string{
-			"self_link",
 			"name",
 		}
 
@@ -63,6 +62,10 @@ func testAccDataSourceComputeResourcePolicyCheck(dataSourceName string, resource
 					rsAttr[attrToCheck],
 				)
 			}
+		}
+
+		if !compareSelfLinkOrResourceName("", dsAttr["self_link"], rsAttr["self_link"], nil) && dsAttr["self_link"] != rsAttr["self_link"] {
+			return fmt.Errorf("self link does not match: %s vs %s", dsAttr["self_link"], rsAttr["self_link"])
 		}
 
 		return nil
@@ -93,21 +96,21 @@ func testAccCheckDataSourceComputeResourcePolicyDestroy(resourceName string) res
 func testAccDataSourceComputeResourcePolicyConfig(rsName, dsName, randomSuffix string) string {
 	return fmt.Sprintf(`
 resource "google_compute_resource_policy" "%s" {
-  name = "policy-%s"
+  name   = "policy-%s"
   region = "us-central1"
   snapshot_schedule_policy {
     schedule {
       daily_schedule {
         days_in_cycle = 1
-        start_time = "04:00"
+        start_time    = "04:00"
       }
     }
   }
 }
 
 data "google_compute_resource_policy" "%s" {
-  name     = "${google_compute_resource_policy.%s.name}"
-  region   = "${google_compute_resource_policy.%s.region}"
+  name     = google_compute_resource_policy.%s.name
+  region   = google_compute_resource_policy.%s.region
 }
 `, rsName, randomSuffix, dsName, rsName, rsName)
 }

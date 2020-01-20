@@ -12,6 +12,7 @@
 #     .github/CONTRIBUTING.md.
 #
 # ----------------------------------------------------------------------------
+subcategory: "Identity-Aware Proxy"
 layout: "google"
 page_title: "Google: google_iap_app_engine_version_iam"
 sidebar_current: "docs-google-iap-app-engine-version-iam"
@@ -36,51 +37,115 @@ Three different resources help you manage your IAM policy for Iap AppEngineVersi
 
 ```hcl
 data "google_iam_policy" "admin" {
-	binding {
-		role = "roles/iap.httpsResourceAccessor"
-		members = [
-			"user:jane@example.com",
-		]
-	}
+  binding {
+    role = "roles/iap.httpsResourceAccessor"
+    members = [
+      "user:jane@example.com",
+    ]
+  }
 }
 
 resource "google_iap_app_engine_version_iam_policy" "editor" {
-	project = "${google_app_engine_standard_app_version.version.project}"
-	app_id = "${google_app_engine_standard_app_version.version.project}"
-	service = "${google_app_engine_standard_app_version.version.service}"
-	version_id = "${google_app_engine_standard_app_version.version.version_id}"
-	policy_data = "${data.google_iam_policy.admin.policy_data}"
+  project = "${google_app_engine_standard_app_version.version.project}"
+  app_id = "${google_app_engine_standard_app_version.version.project}"
+  service = "${google_app_engine_standard_app_version.version.service}"
+  version_id = "${google_app_engine_standard_app_version.version.version_id}"
+  policy_data = "${data.google_iam_policy.admin.policy_data}"
 }
 ```
 
+With IAM Conditions ([beta](https://terraform.io/docs/providers/google/provider_versions.html)):
+
+```hcl
+data "google_iam_policy" "admin" {
+  binding {
+    role = "roles/iap.httpsResourceAccessor"
+    members = [
+      "user:jane@example.com",
+    ]
+
+    condition {
+      title       = "expires_after_2019_12_31"
+      description = "Expiring at midnight of 2019-12-31"
+      expression  = "request.time < timestamp(\"2020-01-01T00:00:00Z\")"
+    }
+  }
+}
+
+resource "google_iap_app_engine_version_iam_policy" "editor" {
+  project = "${google_app_engine_standard_app_version.version.project}"
+  app_id = "${google_app_engine_standard_app_version.version.project}"
+  service = "${google_app_engine_standard_app_version.version.service}"
+  version_id = "${google_app_engine_standard_app_version.version.version_id}"
+  policy_data = "${data.google_iam_policy.admin.policy_data}"
+}
+```
 ## google\_iap\_app\_engine\_version\_iam\_binding
 
 ```hcl
 resource "google_iap_app_engine_version_iam_binding" "editor" {
-	project = "${google_app_engine_standard_app_version.version.project}"
-	app_id = "${google_app_engine_standard_app_version.version.project}"
-	service = "${google_app_engine_standard_app_version.version.service}"
-	version_id = "${google_app_engine_standard_app_version.version.version_id}"
-	role = "roles/iap.httpsResourceAccessor"
-	members = [
-		"user:jane@example.com",
-	]
+  project = "${google_app_engine_standard_app_version.version.project}"
+  app_id = "${google_app_engine_standard_app_version.version.project}"
+  service = "${google_app_engine_standard_app_version.version.service}"
+  version_id = "${google_app_engine_standard_app_version.version.version_id}"
+  role = "roles/iap.httpsResourceAccessor"
+  members = [
+    "user:jane@example.com",
+  ]
 }
 ```
 
+With IAM Conditions ([beta](https://terraform.io/docs/providers/google/provider_versions.html)):
+
+```hcl
+resource "google_iap_app_engine_version_iam_binding" "editor" {
+  project = "${google_app_engine_standard_app_version.version.project}"
+  app_id = "${google_app_engine_standard_app_version.version.project}"
+  service = "${google_app_engine_standard_app_version.version.service}"
+  version_id = "${google_app_engine_standard_app_version.version.version_id}"
+  role = "roles/iap.httpsResourceAccessor"
+  members = [
+    "user:jane@example.com",
+  ]
+
+  condition {
+    title       = "expires_after_2019_12_31"
+    description = "Expiring at midnight of 2019-12-31"
+    expression  = "request.time < timestamp(\"2020-01-01T00:00:00Z\")"
+  }
+}
+```
 ## google\_iap\_app\_engine\_version\_iam\_member
 
 ```hcl
 resource "google_iap_app_engine_version_iam_member" "editor" {
-	project = "${google_app_engine_standard_app_version.version.project}"
-	app_id = "${google_app_engine_standard_app_version.version.project}"
-	service = "${google_app_engine_standard_app_version.version.service}"
-	version_id = "${google_app_engine_standard_app_version.version.version_id}"
-	role = "roles/iap.httpsResourceAccessor"
-	member = "user:jane@example.com"
+  project = "${google_app_engine_standard_app_version.version.project}"
+  app_id = "${google_app_engine_standard_app_version.version.project}"
+  service = "${google_app_engine_standard_app_version.version.service}"
+  version_id = "${google_app_engine_standard_app_version.version.version_id}"
+  role = "roles/iap.httpsResourceAccessor"
+  member = "user:jane@example.com"
 }
 ```
 
+With IAM Conditions ([beta](https://terraform.io/docs/providers/google/provider_versions.html)):
+
+```hcl
+resource "google_iap_app_engine_version_iam_member" "editor" {
+  project = "${google_app_engine_standard_app_version.version.project}"
+  app_id = "${google_app_engine_standard_app_version.version.project}"
+  service = "${google_app_engine_standard_app_version.version.service}"
+  version_id = "${google_app_engine_standard_app_version.version.version_id}"
+  role = "roles/iap.httpsResourceAccessor"
+  member = "user:jane@example.com"
+
+  condition {
+    title       = "expires_after_2019_12_31"
+    description = "Expiring at midnight of 2019-12-31"
+    expression  = "request.time < timestamp(\"2020-01-01T00:00:00Z\")"
+  }
+}
+```
 ## Argument Reference
 
 The following arguments are supported:
@@ -108,6 +173,22 @@ The following arguments are supported:
 * `policy_data` - (Required only by `google_iap_app_engine_version_iam_policy`) The policy data generated by
   a `google_iam_policy` data source.
 
+* `condition` - (Optional, [Beta](https://terraform.io/docs/providers/google/provider_versions.html)) An [IAM Condition](https://cloud.google.com/iam/docs/conditions-overview) for a given binding.
+  Structure is documented below.
+
+---
+
+The `condition` block supports:
+
+* `expression` - (Required) Textual representation of an expression in Common Expression Language syntax.
+
+* `title` - (Required) A title for the expression, i.e. a short string describing its purpose.
+
+* `description` - (Optional) An optional description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
+
+~> **Warning:** Terraform considers the `role` and condition contents (`title`+`description`+`expression`) as the
+  identifier for the binding. This means that if any part of the condition is changed out-of-band, Terraform will
+  consider it to be an entirely different resource and will treat it as such.
 ## Attributes Reference
 
 In addition to the arguments listed above, the following computed attributes are
@@ -117,19 +198,38 @@ exported:
 
 ## Import
 
-Iap appengineversion IAM resources can be imported using the project, resource identifiers, role and member.
+For all import syntaxes, the "resource in question" can take any of the following forms:
 
+* projects/{{project}}/iap_web/appengine-{{appId}}/services/{{service}}/versions/{{versionId}}
+* {{project}}/{{appId}}/{{service}}/{{versionId}}
+* {{appId}}/{{service}}/{{versionId}}
+* {{version}}
+
+Any variables not passed in the import command will be taken from the provider configuration.
+
+Iap appengineversion IAM resources can be imported using the resource identifiers, role, and member.
+
+IAM member imports use space-delimited identifiers: the resource in question, the role, and the member identity, e.g.
+```
+$ terraform import google_iap_app_engine_version_iam_member.editor "projects/{{project}}/iap_web/appengine-{{appId}}/services/{{service}}/versions/{{versionId}} roles/iap.httpsResourceAccessor jane@example.com"
+```
+
+IAM binding imports use space-delimited identifiers: the resource in question and the role, e.g.
+```
+$ terraform import google_iap_app_engine_version_iam_binding.editor "projects/{{project}}/iap_web/appengine-{{appId}}/services/{{service}}/versions/{{versionId}} roles/iap.httpsResourceAccessor"
+```
+
+IAM policy imports use the identifier of the resource in question, e.g.
 ```
 $ terraform import google_iap_app_engine_version_iam_policy.editor projects/{{project}}/iap_web/appengine-{{appId}}/services/{{service}}/versions/{{versionId}}
-
-$ terraform import google_iap_app_engine_version_iam_binding.editor "projects/{{project}}/iap_web/appengine-{{appId}}/services/{{service}}/versions/{{versionId}} roles/iap.httpsResourceAccessor"
-
-$ terraform import google_iap_app_engine_version_iam_member.editor "projects/{{project}}/iap_web/appengine-{{appId}}/services/{{service}}/versions/{{versionId}} roles/iap.httpsResourceAccessor jane@example.com"
 ```
 
 -> If you're importing a resource with beta features, make sure to include `-provider=google-beta`
 as an argument so that Terraform uses the correct provider to import your resource.
 
+-> **Custom Roles**: If you're importing a IAM resource with a custom role, make sure to use the
+ full name of the custom role, e.g. `[projects/my-project|organizations/my-org]/roles/my-custom-role`.
+
 ## User Project Overrides
 
-This resource supports [User Project Overrides](https://www.terraform.io/docs/providers/google/provider_reference.html#user_project_override).
+This resource supports [User Project Overrides](https://www.terraform.io/docs/providers/google/guides/provider_reference.html#user_project_override).

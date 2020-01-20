@@ -12,6 +12,7 @@
 #     .github/CONTRIBUTING.md.
 #
 # ----------------------------------------------------------------------------
+subcategory: "Compute Engine"
 layout: "google"
 page_title: "Google: google_compute_firewall"
 sidebar_current: "docs-google-compute-firewall"
@@ -53,7 +54,7 @@ To get more information about Firewall, see:
 ```hcl
 resource "google_compute_firewall" "default" {
   name    = "test-firewall"
-  network = "${google_compute_network.default.name}"
+  network = google_compute_network.default.name
 
   allow {
     protocol = "icmp"
@@ -132,7 +133,7 @@ The following arguments are supported:
   is unspecified, the firewall rule will be enabled.
 
 * `enable_logging` -
-  (Optional, [Beta](https://terraform.io/docs/providers/google/provider_versions.html))
+  (Optional)
   This field denotes whether to enable logging for a particular
   firewall rule. If logging is enabled, logs will be exported to
   Stackdriver.
@@ -273,4 +274,4 @@ as an argument so that Terraform uses the correct provider to import your resour
 
 ## User Project Overrides
 
-This resource supports [User Project Overrides](https://www.terraform.io/docs/providers/google/provider_reference.html#user_project_override).
+This resource supports [User Project Overrides](https://www.terraform.io/docs/providers/google/guides/provider_reference.html#user_project_override).
